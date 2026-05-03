@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<!DOCTYPE html><html lang="pt-br">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TipoNime</title>
-
-<style>
+<title>TipoNime</title><style>
     body {
         margin: 0;
         font-family: Arial, sans-serif;
@@ -27,7 +24,6 @@
         margin: auto;
     }
 
-    /* PERFIL */
     .sidebar {
         width: 250px;
         background: #1a1a1a;
@@ -43,7 +39,6 @@
         border: 3px solid #b30000;
     }
 
-    /* CONTEÚDO */
     .content {
         flex: 1;
         padding: 15px;
@@ -66,6 +61,7 @@
         margin-top: 8px;
         line-height: 1.4;
         font-size: 14px;
+        white-space: pre-line;
     }
 
     footer {
@@ -76,9 +72,7 @@
         font-size: 12px;
     }
 
-    /*  RESPONSIVO */
     @media (max-width: 768px) {
-
         .container {
             flex-direction: column;
         }
@@ -111,65 +105,66 @@
             font-size: 13px;
         }
     }
-</style>
-
-</head>
-<body>
-
-<header>TipoNime</header>
-
-<div class="container">
-
-    <!-- PERFIL -->
-    <div class="sidebar">
-        <img src="imagens/perfil.png" alt="perfil">
-        <h2>TipoNime</h2>
-        <p>Blog de animes</p>
-    </div>
-
-    <!-- POSTS -->
-    <div class="content" id="posts"></div>
-
+</style></head>
+<body><header>TipoNime</header><div class="container"><div class="sidebar">
+    <img src="imagens/perfil.png" alt="perfil">
+    <h2>TipoNime</h2>
+    <p>Blog de animes</p>
 </div>
 
-<footer>
-    © 2026 TipoNime
-</footer>
+<div class="content" id="posts"></div>
 
-<script>
+</div><footer>
+    © 2026 TipoNime
+</footer><script>
 /*
-✍️ ESCREVA SEUS ARTIGOS AQUI
+📂 SISTEMA DE ARTIGOS VIA TXT
+
+Crie uma pasta chamada: /artigos
+
+Cada arquivo .txt deve seguir esse formato:
+
+Linha 1 = Título
+Linha 2+ = Conteúdo
 */
 
-const artigos = [
-
-    {
-        titulo: "Naruto: O caminho ninja",
-        conteudo: "Naruto é um dos animes mais icônicos..."
-    },
-
-    {
-        titulo: "Attack on Titan",
-        conteudo: "Uma história cheia de mistérios e gigantes."
-    }
-
+const arquivos = [
+    "artigos/artigo1.txt",
+    "artigos/artigo2.txt"
 ];
 
-/* AUTO CRIAÇÃO DOS POSTS */
 const container = document.getElementById("posts");
 
-artigos.forEach(post => {
+async function carregarArtigos() {
+    for (let caminho of arquivos) {
+        try {
+            const resposta = await fetch(caminho);
+            const texto = await resposta.text();
+
+            const linhas = texto.split("\n");
+            const titulo = linhas.shift();
+            const conteudo = linhas.join("\n");
+
+            criarPost(titulo, conteudo);
+
+        } catch (erro) {
+            console.error("Erro ao carregar:", caminho);
+        }
+    }
+}
+
+function criarPost(titulo, conteudo) {
     const div = document.createElement("div");
     div.classList.add("post");
 
     div.innerHTML = `
-        <h3>${post.titulo}</h3>
-        <p>${post.conteudo}</p>
+        <h3>${titulo}</h3>
+        <p>${conteudo}</p>
     `;
 
     container.appendChild(div);
-});
-</script>
+}
 
-</body>
+carregarArtigos();
+</script></body>
 </html>
